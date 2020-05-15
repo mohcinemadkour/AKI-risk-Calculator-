@@ -6,6 +6,8 @@ from pandas import Series, DataFrame
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import seaborn as sns
+sns.set_context(context='talk', font_scale=2)
 
 class Patient(object):
     def __init__(self, mrn, data = {}, age = 0, gender = 0, race = 0):
@@ -62,10 +64,11 @@ class Patient(object):
         return (self.data.value > self.baseCr * 1.5) & self.data.peak
                                
     def plot(self):
-        plt.hlines(self.baseCr, self.data.index.min(), self.data.index.max(), linestyles='dotted')
-        plt.plot(self.data.index, self.data.value)        
+        plt.hlines(self.baseCr, self.data.index.min(), self.data.index.max(), linestyles='dotted', label="Baseline Creatinine")
+        plt.plot(self.data.index, self.data.value, label="Creatinine")        
         plt.plot(self.data.index, self.data.value, 'g.')
-        plt.plot(self.data.index[self.data.aki], self.data.value[self.data.aki], 'ro')
+        plt.plot(self.data.index[self.data.aki], self.data.value[self.data.aki], 'ro', label="Peak Creatinine")
         plt.title(str(self))
         plt.xlabel("Date")
         plt.ylabel("Creatinine")
+        plt.legend(loc="upper right")
